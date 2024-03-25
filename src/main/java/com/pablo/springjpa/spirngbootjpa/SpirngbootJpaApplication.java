@@ -27,12 +27,13 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		// lista();
 		// oneFindxd();
-		create();
+		// create();
+		// update();
+		delete();
 	}
 
-
 	@Transactional
-	public void create(){
+	public void create() {
 
 		Scanner scanner = new Scanner(System.in);
 		String name = scanner.next();
@@ -44,28 +45,78 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		System.out.println(newPerson);
 	}
 
-	@Transactional(readOnly = true)
-	private void lista(){
-		// List<Person> persons = (List<Person>) repository.findAll(); 
+	@Transactional
+	public void delete() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Escriba id para eliminar");
+		Long id = scanner.nextLong();
+		// repository.deleteById(id);
+		// System.out.println("Objeto eliminado");
+		// scanner.close();
 
-		List<Person> persons = (List<Person>) repository.budcarByProgramingLanguage("Java"); 
-		persons.stream().forEach(person -> System.out.println(person));
+		Optional<Person> optionalPerson = repository.findById(id);
+		optionalPerson.ifPresentOrElse(
+				person -> repository.delete(person),
+				() -> System.out.println("No existe persona con ese id"));
 
-		List<Object[]> persons2 = repository.obtenerPersonByProgramingLanguage("Java"); 
-		persons2.stream().forEach(person -> System.out.println(person[0]+" "+person[1]));
+		scanner.close();
+
+	}
+
+	@Transactional
+	public void update() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Escriba el id de la persona");
+		Long id = scanner.nextLong();
+		Optional<Person> optionalPerson = repository.findById(id);
+		Person person = null;
+		// optionalPerson.ifPresent(person->{
+		// System.out.println(person);
+		// System.out.println("Ingrese el lenguaje de programacion");
+		// String programingLanguage = scanner.next();
+		// person.setProgramingLanguage(programingLanguage);
+		// var actualizado = repository.save(person);
+		// System.out.println("Actualizado");
+		// System.out.println(actualizado);
+		// });
+		if (optionalPerson.isPresent()) {
+			person = optionalPerson.orElseThrow();
+			System.out.println(person);
+			System.out.println("Ingrese el lenguaje de programacion");
+			String programingLanguage = scanner.next();
+			person.setProgramingLanguage(programingLanguage);
+			var actualizado = repository.save(person);
+			System.out.println("Actualizado");
+			System.out.println(actualizado);
+		} else {
+			System.out.println("No se encontro persona");
+		}
+
+		scanner.close();
 	}
 
 	@Transactional(readOnly = true)
-	private void oneFindxd(){
-		// Person persona =  null;
+	private void lista() {
+		// List<Person> persons = (List<Person>) repository.findAll();
+
+		List<Person> persons = (List<Person>) repository.budcarByProgramingLanguage("Java");
+		persons.stream().forEach(person -> System.out.println(person));
+
+		List<Object[]> persons2 = repository.obtenerPersonByProgramingLanguage("Java");
+		persons2.stream().forEach(person -> System.out.println(person[0] + " " + person[1]));
+	}
+
+	@Transactional(readOnly = true)
+	private void oneFindxd() {
+		// Person persona = null;
 		// Optional<Person> optional = repository.findById(1L);
 		// if (optional.isPresent()) {
-		// 	persona = optional.get();
+		// persona = optional.get();
 		// }
-		// System.out.println(persona);	
-		repository.findById(2L).ifPresent(System.out::println);	
+		// System.out.println(persona);
+		repository.findById(2L).ifPresent(System.out::println);
 		repository.leerPorNombre("Juan").ifPresent(System.out::println);
-		List<Person> pornombre = (List<Person>) repository.leerPorParecidoNombre("En");	
+		List<Person> pornombre = (List<Person>) repository.leerPorParecidoNombre("En");
 		System.out.println(pornombre);
 	}
 }
