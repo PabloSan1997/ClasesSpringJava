@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "persons")
 public class Person {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +21,16 @@ public class Person {
     @Column(name = "lastname")
     private String lastname;
 
-    @Column(name ="programing_language")
+    @Column(name = "programing_language")
     private String programingLanguage;
 
     public Person() {
-        
+
+    }
+
+    public Person(String name, String lastname) {
+        this.name = name;
+        this.lastname = lastname;
     }
 
     public Person(Long id, String name, String lastname, String programingLanguage) {
@@ -38,24 +43,31 @@ public class Person {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getLastname() {
         return lastname;
     }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public String getProgramingLanguage() {
         return programingLanguage;
     }
+
     public void setProgramingLanguage(String programingLanguage) {
         this.programingLanguage = programingLanguage;
     }
@@ -65,6 +77,5 @@ public class Person {
         return "[id=" + id + ", name=" + name + ", lastname=" + lastname + ", programingLanguage="
                 + programingLanguage + "]";
     }
-    
-    
+
 }

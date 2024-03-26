@@ -29,7 +29,52 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		// oneFindxd();
 		// create();
 		// update();
-		delete();
+		// perzonalizedQueries();
+		perzonalizedQueriesPart2();
+	}
+
+	@Transactional(readOnly = true)
+	public void perzonalizedQueriesPart2(){
+		System.out.println("==========Consulata mixta enlistar================");
+		List<Object[]> personRegs = repository.findAllPersonMixDataList();
+		personRegs.forEach(reg -> {
+			System.out.println("ProgaminLengage: "+reg[1] + ", Persona: "+reg[0]);
+		});
+
+
+		System.out.println("==========Consulata Perzonalizada clase Perzona================");
+		List<Person> persons = repository.findAllPersonalizedPerson();
+		persons.forEach(peron -> {
+			System.out.println(peron);
+		});
+	}
+
+	@Transactional(readOnly = true)
+	public void perzonalizedQueries(){
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Escriba id");
+		Long id = scanner.nextLong();
+		scanner.close();
+
+		System.out.println("==========Consulata solo nombre por el id================");
+		String name = repository.getNameById(id);
+		System.out.println(name);
+
+		System.out.println("==========Consulata nombre completo por el id================");
+		String fullname = repository.getFullNameById(id);
+		System.out.println(fullname);
+
+		System.out.println("==========Conculat campos perzonalizados por id");
+		Optional<Object> personReq = repository.obtenerPersonDataFull(id);
+		personReq.ifPresentOrElse(data -> {
+			Object[] personC = (Object[]) data;
+			var message = "Nombre: "+personC[0]+" Lastname: "+personC[1]+" Programing language: "+personC[2];
+			System.out.println(message);
+		}, ()->{
+			System.out.println("No SE encontro datos");
+		});
+		
+		
 	}
 
 	@Transactional
@@ -119,4 +164,6 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		List<Person> pornombre = (List<Person>) repository.leerPorParecidoNombre("En");
 		System.out.println(pornombre);
 	}
+
+
 }
