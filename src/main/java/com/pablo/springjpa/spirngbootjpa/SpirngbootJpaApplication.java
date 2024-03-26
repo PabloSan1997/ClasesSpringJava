@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pablo.springjpa.spirngbootjpa.entities.Person;
+import com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto;
 import com.pablo.springjpa.spirngbootjpa.repository.PersonRepository;
 
 @SpringBootApplication
@@ -45,6 +46,12 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		System.out.println("==========Consulata Perzonalizada clase Perzona================");
 		List<Person> persons = repository.findAllPersonalizedPerson();
 		persons.forEach(peron -> {
+			System.out.println(peron);
+		});
+
+		System.out.println("==========Consulata Perzonalizada clase Perzona DTO================");
+		List<PersonDto> personDto = repository.findAllPersonalizedPersonDto();
+		personDto.forEach(peron -> {
 			System.out.println(peron);
 		});
 	}
