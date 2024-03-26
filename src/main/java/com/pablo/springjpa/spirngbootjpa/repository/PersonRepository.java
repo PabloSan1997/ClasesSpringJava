@@ -11,6 +11,27 @@ import com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    @Query("select lower(concat(p.name,' ',p.lastname)) from Person p")
+    List<String> findAllFullNameConcatLower();
+
+    @Query("select upper(p.name||' '||p.lastname) from Person p")
+    List<String> findAllFullNameConcatUpper();
+
+    @Query("select p.name||' '||p.lastname from Person p")
+    List<String> findAllFullNameConcat();
+
+    @Query("select count(distinct(p.programingLanguage)) from Person p")
+    Long findAllLenguagesProgramingDistictCount();
+
+    @Query("select distinct(p.programingLanguage) from Person p")
+    List<String> findAllLenguagesProgramingDistict();
+
+    @Query("select p.name from Person p")
+    List<String> findAllNames();
+
+    @Query("select distinct(p.name) from Person p")
+    List<String> findAllDistinctNames();
+
     @Query("select new com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto(p.name, p.lastname) from Person p")
     List<PersonDto> findAllPersonalizedPersonDto();
 

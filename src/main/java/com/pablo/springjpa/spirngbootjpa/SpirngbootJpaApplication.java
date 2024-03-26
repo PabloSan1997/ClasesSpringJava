@@ -31,7 +31,43 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		// create();
 		// update();
 		// perzonalizedQueries();
-		perzonalizedQueriesPart2();
+		// perzonalizedQueriesPart2();
+		// perzonilizedQueriesDisntinct();
+		perzonilizedQueriesDisntinctUpperAndLowerCase();
+	}
+
+	@Transactional(readOnly = true)
+	public void perzonilizedQueriesDisntinctUpperAndLowerCase(){
+		System.out.println("=============Consulta nombres y apellidso=================");
+		List<String> names = repository.findAllFullNameConcat();
+		names.forEach(System.out::println);
+
+		System.out.println("\n===================Lower case======================");
+		List<String> names2 = repository.findAllFullNameConcatLower();
+		names2.forEach(System.out::println);
+
+		System.out.println("\n========Upper case===========");
+		List<String> names3 = repository.findAllFullNameConcatUpper();
+		names3.forEach(System.out::println);
+	}
+
+	@Transactional(readOnly = true)
+	public void perzonilizedQueriesDisntinct(){
+		System.out.println("========Consultas con nombres de personas===========");
+		List<String> nombres = repository.findAllNames();
+		nombres.forEach(System.out::println);
+
+		System.out.println("\n========Consultas con nombres distinck===========");
+		List<String> nombres2 = repository.findAllDistinctNames();
+		nombres2.forEach(System.out::println);
+
+		System.out.println("\n========Consultas con leguajes de programacion distinck===========");
+		List<String> prog = repository.findAllLenguagesProgramingDistict();
+		prog.forEach(System.out::println);
+
+		System.out.println("\n========Consultas con leguajes de programacion distinckCount===========");
+		Long count = repository.findAllLenguagesProgramingDistictCount();
+		System.out.println(count);
 	}
 
 	@Transactional(readOnly = true)
