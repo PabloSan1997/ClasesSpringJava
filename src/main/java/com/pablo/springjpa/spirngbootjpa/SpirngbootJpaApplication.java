@@ -33,9 +33,36 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		// perzonalizedQueries();
 		// perzonalizedQueriesPart2();
 		// perzonilizedQueriesDisntinct();
-		perzonilizedQueriesDisntinctUpperAndLowerCase();
+		// perzonilizedQueriesDisntinctUpperAndLowerCase();
+		personilizedBetween();
 	}
 
+	@Transactional(readOnly = true)
+	public void personilizedBetween(){
+		System.out.println("=============Entre dos ids=================");
+		List<Person> persons = repository.findAllBetweenId();
+		persons.forEach(System.out::println);
+
+		System.out.println("=============Entre dos letras=================");
+		List<Person> persons2 = repository.findAllBetweenWord("J", "q");
+		persons2.forEach(System.out::println);
+
+		System.out.println("=============Entre dos letras sin Query=================");
+		List<Person> persons3 = repository.findByNameBetween("J", "Q");
+		persons3.forEach(System.out::println);
+
+		System.out.println("=============Entre dos ids ordenado=================");
+		List<Person> persons4 = repository.findAllBetweenIdOrder();
+		persons4.forEach(System.out::println);
+
+		System.out.println("=============Entre dos nombres ordenado=================");
+		List<Person> persons5 = repository.findAllBetweenWordOrder("j", "q");
+		persons5.forEach(System.out::println);
+
+		System.out.println("=============Entre dos id ordenado por id sin query=================");
+		List<Person> persons6 = repository.findByIdBetweenOrderByNameDesc(2L, 4L);
+		persons6.forEach(System.out::println);
+	}
 	@Transactional(readOnly = true)
 	public void perzonilizedQueriesDisntinctUpperAndLowerCase(){
 		System.out.println("=============Consulta nombres y apellidso=================");

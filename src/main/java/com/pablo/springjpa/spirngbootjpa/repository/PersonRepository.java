@@ -11,6 +11,22 @@ import com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    List<Person> findByIdBetweenOrderByNameDesc(Long id1, Long id2);
+
+    @Query("select p from Person p where p.id between 2 and 5 order by p.name desc")
+    List<Person> findAllBetweenIdOrder();
+    
+    @Query("select p from Person p where p.name between ?1 and ?2 order by p.name")
+    List<Person> findAllBetweenWordOrder(String c1, String c2);
+
+    List<Person> findByNameBetween(String c1, String c2);
+
+    @Query("select p from Person p where p.name between ?1 and ?2")
+    List<Person> findAllBetweenWord(String c1, String c2);
+
+    @Query("select p from Person p where p.id between 2 and 5")
+    List<Person> findAllBetweenId();
+
     @Query("select lower(concat(p.name,' ',p.lastname)) from Person p")
     List<String> findAllFullNameConcatLower();
 
