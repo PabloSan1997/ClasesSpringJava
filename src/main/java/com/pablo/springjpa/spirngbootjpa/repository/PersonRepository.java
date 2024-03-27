@@ -11,6 +11,30 @@ import com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    @Query("select p from Person p where p.id in ?1")
+    List<Person> getPersonsByIds(List<Long> ids);
+
+    @Query("select p.name, length(p.name) from Person p where length(p.name) = (select min(length(p.name)) from Person p)")
+    List<Object[]> getShorterName();
+
+    @Query("select min(p.id), max(p.id), sum(p.id), avg(length(p.name)), count(p.id) from Person p")
+    Object getResumeAggregarionFunction();
+
+    @Query("select min(length(p.name)) from Person p")
+    Integer getMinLengthName();
+
+    @Query("select p.name, length(p.name) from Person p")
+    List<Object[]> getPersonNameLength();
+
+    @Query("select max(p.id) from Person p")
+    Long maxId();
+
+    @Query("select min(p.id) from Person p")
+    Long minId();
+
+    @Query("select count(p.name) from Person p")
+    Long totalPerson();
+
     @Query("select p from Person p order by p.name desc, p.lastname asc")
     List<Person> getAllOrdered();
 

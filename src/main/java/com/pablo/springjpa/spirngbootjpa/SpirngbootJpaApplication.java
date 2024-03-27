@@ -1,5 +1,6 @@
 package com.pablo.springjpa.spirngbootjpa;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -34,11 +35,64 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		// perzonalizedQueriesPart2();
 		// perzonilizedQueriesDisntinct();
 		// perzonilizedQueriesDisntinctUpperAndLowerCase();
-		personilizedBetween();
+		// personilizedBetween();
+		// queriesFunctionAggregation();
+		// subQueries();
+		whereIn();
 	}
 
 	@Transactional(readOnly = true)
-	public void personilizedBetween(){
+	public void whereIn(){
+		System.out.println("==============Lista de personas con where in==========");
+		List<Long> ids = Arrays.asList(1L, 3L, 5L);
+		List<Person> registrers = repository.getPersonsByIds(ids);
+		registrers.forEach(System.out::println);
+	}
+
+	@Transactional(readOnly = true)
+	public void subQueries(){
+		System.out.println("================consulta por el nombre mas corto y su largo==========");
+		List<Object[]> registrers = repository.getShorterName();
+		registrers.forEach(p->{
+			System.out.println("Nombre: "+p[0]+" Largo "+p[1]);
+		});
+	} 
+
+	@Transactional(readOnly = true)
+	public void queriesFunctionAggregation() {
+		Long count = repository.totalPerson();
+		Long max = repository.maxId();
+		Long min = repository.minId();
+
+		System.out.println("=============contar personas=================");
+		System.out.println(count);
+
+		System.out.println("=============Id maximo=================");
+		System.out.println(max);
+
+		System.out.println("=============Id minimo=================");
+		System.out.println(min);
+
+		System.out.println("============Largo de de los nombres=================");
+		List<Object[]> regs = repository.getPersonNameLength();
+		regs.forEach(reg -> {
+			String name = (String) reg[0];
+			Integer length = (Integer) reg[1];
+			System.out.println("Nombre: " + name + " Largo: " + length);
+		});
+
+		System.out.println("============El nombre mas corto=================");
+		Integer minLength = repository.getMinLengthName();
+		System.out.println(minLength);
+
+		System.out.println("============Max min avg count suma=================");
+		Object[] resultado = (Object[]) repository.getResumeAggregarionFunction();
+		System.out.println("Min " + resultado[0] + " Max " + resultado[1] + " Suma " + resultado[2] + " Avg "
+				+ resultado[3] + " Count " + resultado[4]);
+	}
+
+	@Transactional(readOnly = true)
+	public void personilizedBetween() {
 		System.out.println("=============Entre dos ids=================");
 		List<Person> persons = repository.findAllBetweenId();
 		persons.forEach(System.out::println);
@@ -67,8 +121,9 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		List<Person> persons7 = repository.getAllOrdered();
 		persons7.forEach(System.out::println);
 	}
+
 	@Transactional(readOnly = true)
-	public void perzonilizedQueriesDisntinctUpperAndLowerCase(){
+	public void perzonilizedQueriesDisntinctUpperAndLowerCase() {
 		System.out.println("=============Consulta nombres y apellidso=================");
 		List<String> names = repository.findAllFullNameConcat();
 		names.forEach(System.out::println);
@@ -83,7 +138,7 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 	}
 
 	@Transactional(readOnly = true)
-	public void perzonilizedQueriesDisntinct(){
+	public void perzonilizedQueriesDisntinct() {
 		System.out.println("========Consultas con nombres de personas===========");
 		List<String> nombres = repository.findAllNames();
 		nombres.forEach(System.out::println);
@@ -102,13 +157,12 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 	}
 
 	@Transactional(readOnly = true)
-	public void perzonalizedQueriesPart2(){
+	public void perzonalizedQueriesPart2() {
 		System.out.println("==========Consulata mixta enlistar================");
 		List<Object[]> personRegs = repository.findAllPersonMixDataList();
 		personRegs.forEach(reg -> {
-			System.out.println("ProgaminLengage: "+reg[1] + ", Persona: "+reg[0]);
+			System.out.println("ProgaminLengage: " + reg[1] + ", Persona: " + reg[0]);
 		});
-
 
 		System.out.println("==========Consulata Perzonalizada clase Perzona================");
 		List<Person> persons = repository.findAllPersonalizedPerson();
@@ -124,7 +178,7 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 	}
 
 	@Transactional(readOnly = true)
-	public void perzonalizedQueries(){
+	public void perzonalizedQueries() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Escriba id");
 		Long id = scanner.nextLong();
@@ -142,13 +196,12 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		Optional<Object> personReq = repository.obtenerPersonDataFull(id);
 		personReq.ifPresentOrElse(data -> {
 			Object[] personC = (Object[]) data;
-			var message = "Nombre: "+personC[0]+" Lastname: "+personC[1]+" Programing language: "+personC[2];
+			var message = "Nombre: " + personC[0] + " Lastname: " + personC[1] + " Programing language: " + personC[2];
 			System.out.println(message);
-		}, ()->{
+		}, () -> {
 			System.out.println("No SE encontro datos");
 		});
-		
-		
+
 	}
 
 	@Transactional
@@ -238,6 +291,5 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		List<Person> pornombre = (List<Person>) repository.leerPorParecidoNombre("En");
 		System.out.println(pornombre);
 	}
-
 
 }
