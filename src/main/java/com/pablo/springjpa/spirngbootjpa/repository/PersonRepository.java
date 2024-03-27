@@ -11,6 +11,9 @@ import com.pablo.springjpa.spirngbootjpa.modelsDto.PersonDto;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
+    @Query("select p from Person p order by p.name desc, p.lastname asc")
+    List<Person> getAllOrdered();
+
     List<Person> findByIdBetweenOrderByNameDesc(Long id1, Long id2);
 
     @Query("select p from Person p where p.id between 2 and 5 order by p.name desc")

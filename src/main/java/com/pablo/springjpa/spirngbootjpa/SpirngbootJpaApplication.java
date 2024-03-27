@@ -62,6 +62,10 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		System.out.println("=============Entre dos id ordenado por id sin query=================");
 		List<Person> persons6 = repository.findByIdBetweenOrderByNameDesc(2L, 4L);
 		persons6.forEach(System.out::println);
+
+		System.out.println("============Todos los datos ordenados desc por nombre=================");
+		List<Person> persons7 = repository.getAllOrdered();
+		persons7.forEach(System.out::println);
 	}
 	@Transactional(readOnly = true)
 	public void perzonilizedQueriesDisntinctUpperAndLowerCase(){
