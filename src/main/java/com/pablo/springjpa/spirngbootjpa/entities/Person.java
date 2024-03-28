@@ -1,10 +1,15 @@
 package com.pablo.springjpa.spirngbootjpa.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,9 +29,13 @@ public class Person {
     @Column(name = "programing_language")
     private String programingLanguage;
 
+    @Embedded
+    private Audit audit = new Audit();
+
     public Person() {
 
     }
+
 
     public Person(String name, String lastname) {
         this.name = name;
@@ -75,7 +84,7 @@ public class Person {
     @Override
     public String toString() {
         return "[id=" + id + ", name=" + name + ", lastname=" + lastname + ", programingLanguage="
-                + programingLanguage + "]";
+                + programingLanguage + ", create_at=" + audit.getCreatAt() + ", update_at=" + audit.getUpdateAt() + "]";
     }
 
 }

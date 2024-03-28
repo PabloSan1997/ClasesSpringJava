@@ -27,10 +27,10 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// lista();
+		lista();
 		// oneFindxd();
 		// create();
-		// update();
+		//  update();
 		// perzonalizedQueries();
 		// perzonalizedQueriesPart2();
 		// perzonilizedQueriesDisntinct();
@@ -38,7 +38,7 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 		// personilizedBetween();
 		// queriesFunctionAggregation();
 		// subQueries();
-		whereIn();
+		// whereIn();
 	}
 
 	@Transactional(readOnly = true)
@@ -269,10 +269,11 @@ public class SpirngbootJpaApplication implements CommandLineRunner {
 
 	@Transactional(readOnly = true)
 	private void lista() {
-		// List<Person> persons = (List<Person>) repository.findAll();
-
-		List<Person> persons = (List<Person>) repository.budcarByProgramingLanguage("Java");
+		List<Person> persons = (List<Person>) repository.findAll();
 		persons.stream().forEach(person -> System.out.println(person));
+
+		List<Person> persons3 = (List<Person>) repository.budcarByProgramingLanguage("Java");
+		persons3.stream().forEach(person -> System.out.println(person));
 
 		List<Object[]> persons2 = repository.obtenerPersonByProgramingLanguage("Java");
 		persons2.stream().forEach(person -> System.out.println(person[0] + " " + person[1]));
