@@ -25,13 +25,12 @@ public class Client {
     private String lastname;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "tbl_clients_to_direcciones", 
-        joinColumns = @JoinColumn(name = "id_cliente"), 
-        inverseJoinColumns = @JoinColumn(name = "id_direcciones"),
-        uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"})
-        )
+    @JoinTable(name = "tbl_clients_to_direcciones", joinColumns = @JoinColumn(name = "id_cliente"), inverseJoinColumns = @JoinColumn(name = "id_direcciones"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "id_direcciones" }))
     private List<Adress> addreses;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
+    private List<Invoice> invoices;
 
     public Client() {
         addreses = new ArrayList<Adress>();
@@ -41,6 +40,7 @@ public class Client {
         this.name = name;
         this.lastname = lastname;
         this.addreses = new ArrayList<Adress>();
+        this.invoices = new ArrayList<Invoice>();
     }
 
     public Long getId() {
@@ -75,9 +75,18 @@ public class Client {
         this.addreses = addreses;
     }
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
     @Override
     public String toString() {
-        return " {id=" + id + ", name=" + name + ", lastname=" + lastname + ", addreses=" + addreses + "}";
+        return " {id=" + id + ", name=" + name + ", lastname=" + lastname + ", addreses=" + addreses + ", invoices="
+                + invoices + "}";
     }
 
 }

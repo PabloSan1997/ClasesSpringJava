@@ -35,8 +35,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// manyToOneFindByIdClient();
 		// oneToMany();
 		// oneToManyFind();
+		// removeAdres();
+		removeAdressFindById();
 	}
-
 
 	@Transactional
 	public void manyToOne() {
@@ -48,11 +49,29 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		System.out.println(res);
 		// Optional<Client> optionalcliente = clientRespository.findById(2L);
 		// optionalcliente.ifPresent(p -> {
-		// 	Invoice invoice = new Invoice("Compras de Consolas", 2000L);
-		// 	invoice.setClient(p);
-		// 	var res = invoiceRepository.save(invoice);
-		// 	System.out.println(res);
+		// Invoice invoice = new Invoice("Compras de Consolas", 2000L);
+		// invoice.setClient(p);
+		// var res = invoiceRepository.save(invoice);
+		// System.out.println(res);
 		// });
+	}
+
+	@Transactional
+	public void removeAdres() {
+		Client client = new Client("Juana", "La Iguana");
+		Adress adress1 = new Adress("La condesa", 456);
+		Adress adress2 = new Adress("Reforma", 6565);
+		client.getAddreses().add(adress1);
+		client.getAddreses().add(adress2);
+		var res = clientRespository.save(client);
+		System.out.println(res);
+
+		Optional<Client> optionalClient = clientRespository.findById(1L);
+		optionalClient.ifPresent(c -> {
+			c.getAddreses().remove(adress1);
+			var mp = clientRespository.save(c);
+			System.out.println(mp);
+		});
 	}
 
 	@Transactional
@@ -80,11 +99,32 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	}
 
 	@Transactional
+	public void removeAdressFindById() {
+		Optional<Client> optionalcliente = clientRespository.findOne(1L);
+		optionalcliente.ifPresent(p -> {
+			Adress adress1 = new Adress("Tlaxcala", 4854);
+			Adress adress2 = new Adress("Nose", 65);
+			p.setAddreses(Arrays.asList(adress1, adress2));
+			var res = clientRespository.save(p);
+			System.out.println(res);
+
+			Optional<Client> optionalClient = clientRespository.findOne(1L);
+			optionalClient.ifPresent(c -> {
+				Adress adress3 = c.getAddreses().get(1);
+				c.getAddreses().remove(adress3);
+				var mp = clientRespository.save(c);
+				System.out.println(mp);
+			});
+		});
+
+	}
+
+	@Transactional
 	public void oneToManyFind() {
 		Optional<Client> optionalcliente = clientRespository.findById(1L);
 		optionalcliente.ifPresent(p -> {
 			Adress adress1 = new Adress("Tlaxcala", 4854);
-			Adress adress2 = new Adress("Juarez", 65);
+			Adress adress2 = new Adress("Nose", 65);
 			p.setAddreses(Arrays.asList(adress1, adress2));
 			var res = clientRespository.save(p);
 			System.out.println(res);
