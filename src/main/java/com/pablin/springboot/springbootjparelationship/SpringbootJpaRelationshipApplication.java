@@ -1,5 +1,6 @@
 package com.pablin.springboot.springbootjparelationship;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pablin.springboot.springbootjparelationship.entitites.Adress;
 import com.pablin.springboot.springbootjparelationship.entitites.Client;
+import com.pablin.springboot.springbootjparelationship.entitites.ClientDetails;
 import com.pablin.springboot.springbootjparelationship.entitites.Invoice;
+import com.pablin.springboot.springbootjparelationship.repositories.ClientDetailsRepository;
 import com.pablin.springboot.springbootjparelationship.repositories.ClientRespository;
 import com.pablin.springboot.springbootjparelationship.repositories.InvoiceRepository;
 
@@ -25,6 +28,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
@@ -36,7 +42,47 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToMany();
 		// oneToManyFind();
 		// removeAdres();
-		removeAdressFindById();
+		// removeAdressFindById();
+		// oneToManyInvoiceBidirectional();
+		// oneToOne();
+		oneToOneBiderectional();
+	}
+
+	@Transactional
+	public void oneToOne() {
+		Client client = new Client("Elva", "Zurita");
+		var c = clientRespository.save(client);
+
+		ClientDetails clientDetails = new ClientDetails(true, 20);
+		clientDetails.setClient(c);
+
+		var cd = clientDetailsRepository.save(clientDetails);
+		System.out.println(cd);
+	}
+
+	@Transactional
+	public void oneToOneBiderectional() {
+		Client client = new Client("Pedro", "Sanchez");
+		ClientDetails clientDetails = new ClientDetails(true, 50);
+		client.setClientDetails(clientDetails);
+		var res = clientRespository.save(client);
+		System.out.println(res);
+	}
+
+	@Transactional
+	public void oneToManyInvoiceBidirectional() {
+		Client client = new Client("Pablo", "Santillana");
+		clientRespository.save(client);
+		Invoice invoice1 = new Invoice("Compras de Consolas", 2000L);
+		Invoice invoice2 = new Invoice("Compras de la casa", 4895L);
+
+		client.addInvoice(invoice1);
+		client.addInvoice(invoice2);
+
+		var res = clientRespository.save(client);
+
+		System.out.println(res);
+
 	}
 
 	@Transactional

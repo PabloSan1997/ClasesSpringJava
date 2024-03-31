@@ -10,6 +10,6 @@ import com.pablin.springboot.springbootjparelationship.entitites.Client;
 
 public interface ClientRespository extends CrudRepository<Client, Long>{
     
-    @Query("select c from Client c join fetch c.addreses")
+    @Query("select c from Client c join fetch c.addreses where c.id=?1")
     Optional<Client> findOne(Long id);
 }
