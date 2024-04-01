@@ -50,9 +50,7 @@ public class ProductCotnroller {
     
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public  ResponseEntity<?> postProduct(@PathVariable Long id ,@RequestBody Product entity) {
-        entity.setId(id);
-        var product = productService.save(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.update(id, entity));
     }
     
     @RequestMapping(path = "/{id}" , method=RequestMethod.DELETE)

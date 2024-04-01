@@ -45,4 +45,18 @@ public class ProductServiceImp implements ProductService {
         return opproduct;
     }
 
+    @Override
+    @Transactional
+    public Optional<Product> update(Long id, Product product) {
+        Optional<Product> opproduct = productRepository.findById(id);
+        if(opproduct.isPresent()){
+            Product prod = opproduct.orElseThrow();
+            prod.setDescription(product.getDescription());
+            prod.setName(product.getName());;
+            prod.setPrice(product.getPrice());
+            return Optional.of(productRepository.save(prod));
+        }
+        return opproduct;
+    }
+
 }
