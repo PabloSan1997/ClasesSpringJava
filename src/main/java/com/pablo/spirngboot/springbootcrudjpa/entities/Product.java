@@ -1,5 +1,8 @@
 package com.pablo.spirngboot.springbootcrudjpa.entities;
 
+import com.pablo.spirngboot.springbootcrudjpa.validation.IsExistsDb;
+import com.pablo.spirngboot.springbootcrudjpa.validation.IsRequired;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +24,15 @@ public class Product {
 
     @NotEmpty(message = "{NotEmpty.product.name}")
     @Size(min=3, max=44)
+    @IsExistsDb
     private String name;
 
     @Min(500)
     @NotNull
     private Integer price;
     
-    @NotBlank(message = "{NotBlank.product.description}")
+    // @NotBlank(message = "{NotBlank.product.description}")
+    @IsRequired
     private String description;
 
     public Long getId() {

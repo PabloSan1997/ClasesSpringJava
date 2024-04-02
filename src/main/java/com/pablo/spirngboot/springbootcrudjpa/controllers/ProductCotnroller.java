@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pablo.spirngboot.springbootcrudjpa.ProductValidation;
 import com.pablo.spirngboot.springbootcrudjpa.entities.Product;
 import com.pablo.spirngboot.springbootcrudjpa.services.ProductService;
 
@@ -29,6 +30,9 @@ public class ProductCotnroller {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductValidation validation;
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<Product> list() {
@@ -47,6 +51,7 @@ public class ProductCotnroller {
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@Valid @RequestBody Product entity, BindingResult result) {
+        // validation.validate(entity, result);
         if (result.hasFieldErrors()) {
             return vlidation(result);
         }
@@ -57,6 +62,7 @@ public class ProductCotnroller {
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> postProduct(@Valid @RequestBody Product entity, BindingResult result,
             @PathVariable Long id) {
+        // validation.validate(entity, result);
         if (result.hasFieldErrors()) {
             return vlidation(result);
         }
@@ -72,8 +78,9 @@ public class ProductCotnroller {
     private ResponseEntity<?> vlidation(BindingResult result) {
         Map<String, String> errors = new HashMap<String, String>();
         result.getFieldErrors().forEach(e -> {
-            errors.put(e.getField(), "El campo "+e.getField()+" "+e.getDefaultMessage());
-        });;
+            errors.put(e.getField(), "El campo " + e.getField() + " " + e.getDefaultMessage());
+        });
+        ;
         return ResponseEntity.badRequest().body(errors);
     }
 

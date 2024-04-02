@@ -5,11 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pablo.spirngboot.springbootcrudjpa.entities.Product;
 import com.pablo.spirngboot.springbootcrudjpa.respoistories.ProductRepository;
 
-import jakarta.transaction.Transactional;
+
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -57,6 +58,12 @@ public class ProductServiceImp implements ProductService {
             return Optional.of(productRepository.save(prod));
         }
         return opproduct;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
     }
 
 }
