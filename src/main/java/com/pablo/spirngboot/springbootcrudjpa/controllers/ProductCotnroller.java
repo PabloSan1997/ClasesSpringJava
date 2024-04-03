@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/prodcuts")
+@RequestMapping("/api/porducts")
 public class ProductCotnroller {
 
     @Autowired

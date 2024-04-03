@@ -13,6 +13,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -22,8 +24,11 @@ public class User {
     private Long id;
 
     @Column(unique = true)
+    @NotBlank
+    @Size(min = 2, max = 50)
     private String username;
 
+    @NotBlank
     private String password;
 
     @ManyToMany
@@ -37,6 +42,8 @@ public class User {
 
     @Transient
     private boolean admin;
+
+    private boolean enabled;
 
     public boolean isAdmin() {
         return admin;
@@ -76,6 +83,14 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     
