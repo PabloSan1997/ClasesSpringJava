@@ -2,6 +2,8 @@ package com.pablo.spirngboot.springbootcrudjpa.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
@@ -29,6 +32,7 @@ public class User {
     private String username;
 
     @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @ManyToMany
@@ -41,9 +45,15 @@ public class User {
     private List<Role> roles;
 
     @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
 
-    private boolean enabled;
+    private Boolean enabled;
+
+    @PrePersist
+    private void prePersist(){
+        enabled = true;
+    }
 
     public boolean isAdmin() {
         return admin;
@@ -85,11 +95,11 @@ public class User {
         this.roles = roles;
     }
 
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
