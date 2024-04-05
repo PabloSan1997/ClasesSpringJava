@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         body.put("username", username);
         body.put("message", String.format("Hola %s has iniicodo secion con exito", username));
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-        response.setContentType("application/json");
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -94,5 +94,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         return authenticationManager.authenticate(authenticationToken);
     }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+            AuthenticationException failed) throws IOException, ServletException {
+                Map<String, String> body = new HashMap<String, String>();
+                body.put("message", "Error en la autenticacion, username o password incorrectos");
+                body.put("Error", failed.getMessage());
+
+                response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+                response.setContentType(CONTENT_TYPE);
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    
 
 }
