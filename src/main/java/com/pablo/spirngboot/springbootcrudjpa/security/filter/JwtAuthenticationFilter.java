@@ -47,8 +47,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = (User) authResult.getPrincipal();
         String username = user.getUsername();
         Collection<? extends GrantedAuthority> roles= authResult.getAuthorities();
-        Claims claims = Jwts.claims().build();
-        claims.put("authorities", roles);
+
+        Claims claims = Jwts.claims().add("authorities", roles).add("username", username).build();
+       
         String token = Jwts.builder()
                 .subject(username)
                 .claims(claims)
@@ -70,12 +71,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        User user = null;
+        com.pablo.spirngboot.springbootcrudjpa.entities.User user = null;
         String username = null;
         String password = null;
 
         try {
-            user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            user = new ObjectMapper().readValue(request.getInputStream(), com.pablo.spirngboot.springbootcrudjpa.entities.User.class);
             username = user.getUsername();
             password = user.getPassword();
         } catch (StreamReadException e) {
