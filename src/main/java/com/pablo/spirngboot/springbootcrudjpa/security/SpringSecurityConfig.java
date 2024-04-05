@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.pablo.spirngboot.springbootcrudjpa.security.filter.JwtAuthenticationFilter;
+import com.pablo.spirngboot.springbootcrudjpa.security.filter.JwtValidationFilter;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -35,10 +36,11 @@ public class SpringSecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests( (authz) -> authz
         .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
-        .requestMatchers(HttpMethod.GET,"/api/users", "/api/porducts")
+        .requestMatchers(HttpMethod.GET, "/api/users")
         .permitAll()
         .anyRequest().authenticated())
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+        .addFilter(new JwtValidationFilter(authenticationManager()))
         .csrf(config -> config.disable())
         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
