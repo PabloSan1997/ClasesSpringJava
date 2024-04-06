@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
+@CrossOrigin(originPatterns  = "*")
 @RestController
 @RequestMapping("/api/porducts")
 public class ProductCotnroller {
@@ -69,6 +72,7 @@ public class ProductCotnroller {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.update(id, entity));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> requestMethodName(@PathVariable Long id) {
         productService.delete(id);
