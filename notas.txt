@@ -1,0 +1,4 @@
+./mvnw package
+./mvnw clean package
+
+java -jar .\target\springboot-crudjpa-0.0.1-SNAPSHOT.jar
